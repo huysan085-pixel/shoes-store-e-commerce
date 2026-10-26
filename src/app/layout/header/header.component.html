@@ -1,0 +1,40 @@
+<div class="announcement" role="region" aria-label="Store announcements">
+  <div class="container">
+    <span>Free delivery on orders over ${{ freeShipping }}</span>
+    <span class="d-none d-md-inline">Use code WELCOME10 for 10% off. Demo store, no real orders.</span>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="container bar">
+    <a routerLink="/" class="brand" aria-label="Outsole home" (click)="closeMenu()"><app-logo /></a>
+
+    <nav id="main-nav" class="nav-links" [class.open]="menuOpen()" aria-label="Main">
+      <ul>
+        <li><a routerLink="/shop" [queryParams]="{}" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Shop all</a></li>
+        <li><a routerLink="/shop" [queryParams]="{ sort: 'newest' }" (click)="closeMenu()">New arrivals</a></li>
+        <li><a routerLink="/shop" [queryParams]="{ category: 'Running' }" (click)="closeMenu()">Running</a></li>
+        <li><a routerLink="/shop" [queryParams]="{ category: 'Basketball' }" (click)="closeMenu()">Basketball</a></li>
+        <li><a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">About</a></li>
+      </ul>
+
+      <form class="search" role="search" (submit)="onSearch($event, q.value)">
+        <label for="site-search" class="visually-hidden-os">Search shoes by name or brand</label>
+        <i class="bi bi-search" aria-hidden="true"></i>
+        <input #q id="site-search" type="search" name="q" placeholder="Search shoes or brands" autocomplete="off" />
+        <button type="submit" class="visually-hidden-os">Search</button>
+      </form>
+    </nav>
+
+    <div class="tools">
+      <a routerLink="/cart" class="cart-link" [attr.aria-label]="'Shopping cart, ' + cart.itemCount() + ' items'" (click)="closeMenu()">
+        <i class="bi bi-bag" aria-hidden="true"></i>
+        @if (cart.itemCount() > 0) { <span class="cart-badge" aria-hidden="true">{{ cart.itemCount() }}</span> }
+      </a>
+      <button type="button" class="menu-toggle" [attr.aria-expanded]="menuOpen()" aria-controls="main-nav" (click)="toggleMenu()">
+        <i class="bi" [class.bi-list]="!menuOpen()" [class.bi-x-lg]="menuOpen()" aria-hidden="true"></i>
+        <span class="visually-hidden-os">{{ menuOpen() ? 'Close menu' : 'Open menu' }}</span>
+      </button>
+    </div>
+  </div>
+</header>

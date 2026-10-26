@@ -1,0 +1,41 @@
+<article class="card-os">
+  <a class="media" [routerLink]="['/product', product().slug]" [attr.aria-label]="'View ' + product().name">
+    <img [src]="product().image" appImgFallback [alt]="product().name + ' in ' + product().colors[0].name" width="800" height="520"
+         [attr.loading]="eager() ? 'eager' : 'lazy'" decoding="async" />
+    <span class="flags">
+      @if (soldOut()) { <span class="badge-os badge-sold">Sold out</span> }
+      @else {
+        @if (discount() > 0) { <span class="badge-os badge-sale">-{{ discount() }}%</span> }
+        @if (product().newArrival) { <span class="badge-os badge-new">New</span> }
+        @if (lowStock()) { <span class="badge-os badge-low">Only {{ product().stock }} left</span> }
+      }
+    </span>
+  </a>
+
+  <div class="body">
+    <p class="meta">{{ product().brand }} &middot; {{ product().category }}</p>
+    <h3 class="name"><a [routerLink]="['/product', product().slug]">{{ product().name }}</a></h3>
+    <app-rating-stars [rating]="product().rating" [count]="product().reviewCount" />
+    <p class="price-row">
+      <span class="price">{{ product().price | currency: 'USD' : 'symbol' : '1.0-2' }}</span>
+      @if (product().originalPrice) { <span class="price-old"><span class="visually-hidden-os">Was </span>{{ product().originalPrice | currency: 'USD' : 'symbol' : '1.0-2' }}</span> }
+    </p>
+    <p class="sizes">{{ sizeRange() }}</p>
+
+    @if (quickAdd()) {
+      <div class="actions">
+        <label class="visually-hidden-os" [for]="'size-' + product().id">Size for {{ product().name }}</label>
+        <select class="form-select" [id]="'size-' + product().id" [value]="size()" (change)="onSize($any($event.target).value)" [disabled]="soldOut()"
+                [class.is-invalid]="!!error()">
+          <option value="">Select size</option>
+          @for (s of product().sizes; track s) { <option [value]="s">US {{ s }}</option> }
+        </select>
+        <button type="button" class="btn-os btn-sm-os" [disabled]="soldOut()" (click)="addToCart()">
+          <i class="bi bi-bag-plus" aria-hidden="true"></i> {{ soldOut() ? 'Sold out' : 'Add to cart' }}
+        </button>
+      </div>
+      @if (error()) { <p class="field-error" role="alert">{{ error() }}</p> }
+    }
+    <a class="btn-os-outline btn-sm-os details" [routerLink]="['/product', product().slug]">View details</a>
+  </div>
+</article>

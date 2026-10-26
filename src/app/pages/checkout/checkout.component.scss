@@ -1,0 +1,18 @@
+.checkout-layout { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: clamp(1.5rem, 3vw, 3rem); align-items: start; }
+fieldset { min-width: 0; }
+legend { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 1rem; float: left; width: 100%; padding: 0; }
+legend + * { clear: both; }
+.field-error { min-height: 1.2rem; }
+.alert-os { display: flex; gap: 0.6rem; align-items: center; background: #fdecec; color: #8c1c1c; border: 1px solid #f3b9b9; padding: 0.85rem 1rem; border-radius: var(--os-radius); margin-bottom: 1.25rem; font-weight: 600; }
+.pay-grid { display: grid; gap: 0.7rem; }
+.pay { position: relative; display: grid; grid-template-columns: auto 1fr auto; gap: 0.9rem; align-items: center; padding: 1rem; border: 1.5px solid var(--os-gray-300); border-radius: var(--os-radius); cursor: pointer; transition: border-color 0.15s, background-color 0.15s;
+  > i:first-of-type { font-size: 1.5rem; } small { display: block; color: var(--os-gray-600); } .tick { visibility: hidden; color: var(--os-accent); font-size: 1.2rem; }
+  &:hover { border-color: var(--os-black); } &.selected { border-color: var(--os-black); background: var(--os-gray-100); .tick { visibility: visible; } }
+  &:has(input:focus-visible) { outline: 3px solid var(--os-accent); outline-offset: 2px; } }
+.btn-lg-os { min-height: 56px; font-size: 1.05rem; }
+.summary { position: sticky; top: 90px; h2 { font-size: 1.25rem; margin-bottom: 1rem; } }
+.items { list-style: none; margin: 0 0 1rem; padding: 0; li { display: grid; grid-template-columns: 72px 1fr auto; gap: 0.8rem; align-items: center; padding: 0.7rem 0; border-bottom: 1px solid var(--os-gray-200); } small { display: block; color: var(--os-gray-600); } }
+.pic { position: relative; background: var(--os-gray-100); border-radius: 4px; img { width: 100%; height: auto; display: block; padding: 4px; } .q { position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; border-radius: 10px; background: var(--os-black); color: #fff; font-size: 0.72rem; font-weight: 700; display: grid; place-items: center; } }
+.totals { margin: 0 0 1rem; div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.5rem 0; } dt { font-weight: 400; } dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; } .disc dd { color: var(--os-success); }
+  .grand { border-top: 1px solid var(--os-black); margin-top: 0.4rem; padding-top: 0.9rem; font-size: 1.2rem; dt, dd { font-weight: 800; } } }
+@media (max-width: 991px) { .checkout-layout { grid-template-columns: 1fr; } .summary { position: static; order: -1; } }

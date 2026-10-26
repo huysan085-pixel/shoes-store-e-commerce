@@ -1,0 +1,243 @@
+<!-- <section class="hero on-dark" aria-labelledby="hero-title">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <h1 id="hero-title" class="display">Ten pairs.<br />Every one worth the walk.</h1>
+      <p class="lead">Classics from Nike, Adidas, New Balance, ASICS and Converse. Pick your size, check out in a minute and print your invoice.</p>
+      <div class="hero-actions">
+        <a routerLink="/shop" class="btn-os-light">Shop now</a>
+        <a routerLink="/shop" [queryParams]="{ sort: 'newest' }" class="btn-os-outline">See new arrivals</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <a [routerLink]="['/product', hero.slug]" class="hero-link" [attr.aria-label]="'View ' + hero.name">
+        <img [src]="hero.image" appImgFallback [alt]="hero.name + ' sneaker'" width="800" height="520" fetchpriority="high" loading="eager" />
+      </a>
+      <a [routerLink]="['/product', hero.slug]" class="hero-tag">
+        <span>{{ hero.name }}</span>
+        <strong>{{ hero.price | currency: 'USD' : 'symbol' : '1.0-0' }}</strong>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="cat-title">
+  <div class="container">
+    <h2 id="cat-title" class="h-section mb-4">Shop by category</h2>
+    <div class="row g-3">
+      @for (c of categories; track c.name) {
+        <div class="col-6 col-lg-3">
+          <a class="cat-tile" routerLink="/shop" [queryParams]="{ category: c.name }">
+            <img [src]="c.image" appImgFallback alt="" width="800" height="520" loading="lazy" />
+            <span class="cat-name">{{ c.name }}</span>
+            <span class="cat-count">{{ c.count }} styles</span>
+          </a>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section bg-soft" aria-labelledby="feat-title">
+  <div class="container">
+    <div class="head">
+      <h2 id="feat-title" class="h-section">Featured shoes</h2>
+      <a routerLink="/shop" class="link-all">View all 10 shoes</a>
+    </div>
+    <div class="row g-3 g-lg-4">
+      @for (p of featured; track p.id) {
+        <div class="col-6 col-lg-3"><app-product-card [product]="p" /></div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="promo on-dark" aria-labelledby="promo-title">
+  <div class="container promo-inner">
+    <div>
+      <h2 id="promo-title">Take 10% off your first pair</h2>
+      <p>Add the code at checkout in your cart. Orders over $150 also ship free.</p>
+    </div>
+    <div class="promo-side">
+      <span class="code" aria-label="Promo code WELCOME10">WELCOME10</span>
+      <a routerLink="/shop" class="btn-os-light">Start shopping</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="new-title">
+  <div class="container">
+    <div class="head">
+      <h2 id="new-title" class="h-section">New arrivals</h2>
+      <a routerLink="/shop" [queryParams]="{ sort: 'newest' }" class="link-all">Shop newest first</a>
+    </div>
+    <div class="row g-3 g-lg-4">
+      @for (p of newArrivals; track p.id) {
+        <div class="col-6 col-lg-3"><app-product-card [product]="p" /></div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section-tight bg-soft" aria-label="Store promises">
+  <div class="container">
+    <ul class="promises">
+      <li><i class="bi bi-truck" aria-hidden="true"></i><div><strong>Free delivery over $150</strong><span>Flat $8 shipping on smaller orders</span></div></li>
+      <li><i class="bi bi-arrow-left-right" aria-hidden="true"></i><div><strong>Size help on every page</strong><span>US sizes with fit notes in each listing</span></div></li>
+      <li><i class="bi bi-shield-check" aria-hidden="true"></i><div><strong>Safe demo checkout</strong><span>No card numbers are ever collected</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section newsletter" aria-labelledby="news-title">
+  <div class="container narrow">
+    <h2 id="news-title" class="h-section">Get restock alerts and new drops</h2>
+    <p class="text-muted-os">One short email when new pairs land. This form is a demo and does not send anything.</p>
+    @if (subscribed) {
+      <p class="ok" role="status"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Thanks! You are on the list: {{ email.value }}</p>
+    } @else {
+      <form (ngSubmit)="subscribe()" novalidate class="news-form">
+        <div class="field">
+          <label for="news-email" class="form-label">Email address</label>
+          <input id="news-email" type="email" class="form-control" [formControl]="email" autocomplete="email" placeholder="you@example.com"
+                 [class.is-invalid]="submitted && email.invalid" [attr.aria-invalid]="submitted && email.invalid" aria-describedby="news-error" />
+          <div id="news-error" class="field-error" role="alert">
+            @if (submitted && email.hasError('required')) { Enter your email address. }
+            @else if (submitted && email.invalid) { Enter a valid email, like name&#64;example.com. }
+          </div>
+        </div>
+        <button type="submit" class="btn-os">Sign me up</button>
+      </form>
+    }
+  </div>
+</section> -->
+
+
+
+<!-- HERO SECTION (ASICS GEL-Kayano 14 Showcase) -->
+<section class="hero on-dark" aria-labelledby="hero-title">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <h1 id="hero-title" class="display">Ten pairs.<br />Every one worth the walk.</h1>
+      <p class="lead">Classics from Nike, Adidas, New Balance, ASICS and Converse. Pick your size, check out in a minute and print your invoice.</p>
+      <div class="hero-actions">
+        <a routerLink="/shop" class="btn-os-light">Shop now</a>
+        <a routerLink="/shop" [queryParams]="{ sort: 'newest' }" class="btn-os-outline">See new arrivals</a>
+      </div>
+    </div>
+    
+    <div class="hero-visual">
+      <a [routerLink]="['/product', hero.slug]" class="hero-link" [attr.aria-label]="'View ' + hero.name">
+        <img
+          [src]="hero.image"
+          appImgFallback
+          [alt]="hero.name + ' sneaker'"
+          width="800"
+          height="520"
+          fetchpriority="high"
+          loading="eager"
+        />
+      </a>
+      <a [routerLink]="['/product', hero.slug]" class="hero-tag">
+        <span>{{ hero.name }}</span>
+        <strong>{{ hero.price | currency: 'USD' : 'symbol' : '1.0-0' }}</strong>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- SHOP BY CATEGORY -->
+<section class="section" aria-labelledby="cat-title">
+  <div class="container">
+    <h2 id="cat-title" class="h-section mb-4">Shop by category</h2>
+    <div class="row g-3">
+      @for (c of categories; track c.name) {
+        <div class="col-6 col-lg-3">
+          <a class="cat-tile" routerLink="/shop" [queryParams]="{ category: c.name }">
+            <img [src]="c.image" appImgFallback alt="" width="800" height="520" loading="lazy" />
+            <span class="cat-name">{{ c.name }}</span>
+            <span class="cat-count">{{ c.count }} styles</span>
+          </a>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED SHOES -->
+<section class="section bg-soft" aria-labelledby="feat-title">
+  <div class="container">
+    <div class="head">
+      <h2 id="feat-title" class="h-section">Featured shoes</h2>
+      <a routerLink="/shop" class="link-all">View all 10 shoes</a>
+    </div>
+    <div class="row g-3 g-lg-4">
+      @for (p of featured; track p.id) {
+        <div class="col-6 col-lg-3"><app-product-card [product]="p" /></div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- PROMO BANNER -->
+<section class="promo on-dark" aria-labelledby="promo-title">
+  <div class="container promo-inner">
+    <div>
+      <h2 id="promo-title">Take 10% off your first pair</h2>
+      <p>Add the code at checkout in your cart. Orders over $150 also ship free.</p>
+    </div>
+    <div class="promo-side">
+      <span class="code" aria-label="Promo code WELCOME10">WELCOME10</span>
+      <a routerLink="/shop" class="btn-os-light">Start shopping</a>
+    </div>
+  </div>
+</section>
+
+<!-- NEW ARRIVALS -->
+<section class="section" aria-labelledby="new-title">
+  <div class="container">
+    <div class="head">
+      <h2 id="new-title" class="h-section">New arrivals</h2>
+      <a routerLink="/shop" [queryParams]="{ sort: 'newest' }" class="link-all">Shop newest first</a>
+    </div>
+    <div class="row g-3 g-lg-4">
+      @for (p of newArrivals; track p.id) {
+        <div class="col-6 col-lg-3"><app-product-card [product]="p" /></div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- STORE PROMISES -->
+<section class="section-tight bg-soft" aria-label="Store promises">
+  <div class="container">
+    <ul class="promises">
+      <li><i class="bi bi-truck" aria-hidden="true"></i><div><strong>Free delivery over $150</strong><span>Flat $8 shipping on smaller orders</span></div></li>
+      <li><i class="bi bi-arrow-left-right" aria-hidden="true"></i><div><strong>Size help on every page</strong><span>US sizes with fit notes in each listing</span></div></li>
+      <li><i class="bi bi-shield-check" aria-hidden="true"></i><div><strong>Safe demo checkout</strong><span>No card numbers are ever collected</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="section newsletter" aria-labelledby="news-title">
+  <div class="container narrow">
+    <h2 id="news-title" class="h-section">Get restock alerts and new drops</h2>
+    <p class="text-muted-os">One short email when new pairs land. This form is a demo and does not send anything.</p>
+    @if (subscribed) {
+      <p class="ok" role="status"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Thanks! You are on the list: {{ email.value }}</p>
+    } @else {
+      <form (ngSubmit)="subscribe()" novalidate class="news-form">
+        <div class="field">
+          <label for="news-email" class="form-label">Email address</label>
+          <input id="news-email" type="email" class="form-control" [formControl]="email" autocomplete="email" placeholder="you@example.com"
+                 [class.is-invalid]="submitted && email.invalid" [attr.aria-invalid]="submitted && email.invalid" aria-describedby="news-error" />
+          <div id="news-error" class="field-error" role="alert">
+            @if (submitted && email.hasError('required')) { Enter your email address. }
+            @else if (submitted && email.invalid) { Enter a valid email, like name&#64;example.com. }
+          </div>
+        </div>
+        <button type="submit" class="btn-os">Sign me up</button>
+      </form>
+    }
+  </div>
+</section>

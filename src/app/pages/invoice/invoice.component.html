@@ -1,0 +1,81 @@
+<div class="container section-tight invoice-page">
+  @if (data(); as o) {
+    <div class="toolbar no-print">
+      <a routerLink="/order-confirmation" [queryParams]="{ order: o.id }" class="btn-os-outline btn-sm-os"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to confirmation</a>
+      <div class="d-flex gap-2">
+        <a routerLink="/shop" class="btn-os-outline btn-sm-os">Continue shopping</a>
+        <button type="button" class="btn-os btn-sm-os" (click)="printPage()"><i class="bi bi-printer" aria-hidden="true"></i> Print invoice</button>
+      </div>
+    </div>
+
+    <article class="sheet" aria-label="Invoice">
+      <header class="top">
+        <div>
+          <app-logo />
+          <p class="store">Outsole demo store<br />Phnom Penh, Cambodia<br />hello&#64;outsole.example</p>
+        </div>
+        <div class="title-block">
+          <h1>Invoice</h1>
+          <dl>
+            <div><dt>Invoice no.</dt><dd>{{ o.invoiceNumber }}</dd></div>
+            <div><dt>Order no.</dt><dd>{{ o.id }}</dd></div>
+            <div><dt>Invoice date</dt><dd>{{ o.createdAt | date: 'dd MMM yyyy' }}</dd></div>
+            <div><dt>Status</dt><dd>{{ o.status }}</dd></div>
+          </dl>
+        </div>
+      </header>
+
+      <section class="parties">
+        <div>
+          <h2>Billed to</h2>
+          <p><strong>{{ o.customer.fullName }}</strong><br />{{ o.customer.email }}<br />{{ o.customer.phone }}</p>
+        </div>
+        <div>
+          <h2>Ship to</h2>
+          <address>{{ o.customer.address }}<br />{{ o.customer.city }}, {{ o.customer.province }} {{ o.customer.postalCode }}<br />{{ o.customer.country }}</address>
+        </div>
+        <div>
+          <h2>Payment method</h2>
+          <p>{{ paymentLabels[o.paymentMethod] }}</p>
+        </div>
+      </section>
+
+      <table class="lines">
+        <thead>
+          <tr><th scope="col">Product</th><th scope="col">Size</th><th scope="col">Colour</th><th scope="col" class="num">Qty</th><th scope="col" class="num">Unit price</th><th scope="col" class="num">Line total</th></tr>
+        </thead>
+        <tbody>
+          @for (i of o.items; track $index) {
+            <tr>
+              <td><strong>{{ i.name }}</strong><small>SKU {{ i.sku }}</small></td>
+              <td>US {{ i.size }}</td>
+              <td>{{ i.color }}</td>
+              <td class="num">{{ i.quantity }}</td>
+              <td class="num">{{ i.unitPrice | currency: 'USD' }}</td>
+              <td class="num">{{ i.lineTotal | currency: 'USD' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <dl class="totals avoid-break">
+        <div><dt>Subtotal</dt><dd>{{ o.subtotal | currency: 'USD' }}</dd></div>
+        <div><dt>Discount{{ o.promoCode ? ' (' + o.promoCode + ')' : '' }}</dt><dd>{{ o.discount > 0 ? '-' : '' }}{{ o.discount | currency: 'USD' }}</dd></div>
+        <div><dt>Shipping fee</dt><dd>{{ o.shipping | currency: 'USD' }}</dd></div>
+        <div class="grand"><dt>Total</dt><dd>{{ o.total | currency: 'USD' }}</dd></div>
+      </dl>
+
+      <footer class="foot avoid-break">
+        <p class="thanks">Thank you for shopping with Outsole.</p>
+        <p>This is a demonstration invoice for a student project. No payment was taken and no goods will be shipped.</p>
+      </footer>
+    </article>
+  } @else {
+    <div class="empty-state panel no-print">
+      <i class="bi bi-receipt" aria-hidden="true"></i>
+      <h1 class="h-section mt-3">No invoice to show</h1>
+      <p class="text-muted-os">Invoices are created from demo orders saved in this browser. Place a demo order first.</p>
+      <a routerLink="/shop" class="btn-os">Shop now</a>
+    </div>
+  }
+</div>

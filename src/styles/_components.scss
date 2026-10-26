@@ -1,0 +1,237 @@
+/* Buttons */
+.btn-os,
+.btn-os-outline,
+.btn-os-accent,
+.btn-os-light {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0.7rem 1.5rem;
+  border-radius: var(--os-radius);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition:
+    background-color 0.18s var(--os-ease),
+    color 0.18s var(--os-ease),
+    border-color 0.18s var(--os-ease),
+    transform 0.12s;
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+  &:disabled,
+  &[aria-disabled='true'] {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+.btn-os {
+  background: var(--os-black);
+  color: #fff;
+  &:hover:not(:disabled) {
+    background: var(--os-accent);
+    color: #fff;
+  }
+}
+.btn-os-outline {
+  background: transparent;
+  color: var(--os-black);
+  border-color: var(--os-black);
+  &:hover:not(:disabled) {
+    background: var(--os-black);
+    color: #fff;
+  }
+}
+.btn-os-accent {
+  background: var(--os-accent);
+  color: #fff;
+  &:hover:not(:disabled) {
+    background: var(--os-accent-dark);
+    color: #fff;
+  }
+}
+.btn-os-light {
+  background: #fff;
+  color: var(--os-black);
+  &:hover:not(:disabled) {
+    background: var(--os-gray-200);
+    color: var(--os-black);
+  }
+}
+.btn-sm-os {
+  min-height: 40px;
+  padding: 0.45rem 1rem;
+  font-size: 0.875rem;
+}
+.btn-link-os {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--os-gray-600);
+  text-decoration: underline;
+  font-weight: 600;
+  cursor: pointer;
+  &:hover {
+    color: var(--os-accent);
+  }
+}
+
+/* Forms (Bootstrap form-control tuned to the brand) */
+.form-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.35rem;
+}
+.form-control,
+.form-select {
+  min-height: 48px;
+  border: 1.5px solid var(--os-gray-300);
+  border-radius: var(--os-radius);
+  background-color: #fff;
+  &:focus {
+    border-color: var(--os-black);
+    box-shadow: 0 0 0 3px rgba(47, 75, 255, 0.3);
+  }
+  &.is-invalid {
+    border-color: var(--os-danger);
+    background-image: none;
+    padding-right: 0.75rem;
+  }
+}
+.field-error {
+  color: var(--os-danger);
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+  font-weight: 500;
+}
+.form-check-input:checked {
+  background-color: var(--os-black);
+  border-color: var(--os-black);
+}
+
+/* Badges and pills */
+.badge-os {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.badge-sale {
+  background: var(--os-accent);
+  color: #fff;
+}
+.badge-new {
+  background: var(--os-black);
+  color: #fff;
+}
+.badge-sold {
+  background: var(--os-gray-200);
+  color: var(--os-black);
+}
+.badge-low {
+  background: #fff4d6;
+  color: #7a5200;
+}
+
+.price {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.price-old {
+  color: var(--os-gray-600);
+  text-decoration: line-through;
+  font-weight: 500;
+  margin-left: 0.4rem;
+  font-size: 0.9em;
+}
+
+/* Breadcrumb */
+.breadcrumb-os {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--os-gray-600);
+  li + li::before {
+    content: '/';
+    margin-right: 0.4rem;
+    color: var(--os-gray-300);
+  }
+  a {
+    color: var(--os-gray-600);
+    &:hover {
+      color: var(--os-accent);
+    }
+  }
+  [aria-current] {
+    color: var(--os-black);
+    font-weight: 600;
+  }
+}
+
+/* Cards and panels */
+.panel {
+  border: 1px solid var(--os-gray-200);
+  border-radius: var(--os-radius);
+  background: #fff;
+  padding: clamp(1rem, 2.5vw, 1.75rem);
+}
+.demo-note {
+  background: var(--os-gray-100);
+  border-left: 4px solid var(--os-accent);
+  padding: 0.85rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 0 var(--os-radius) var(--os-radius) 0;
+}
+
+/* Quantity stepper */
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1.5px solid var(--os-gray-300);
+  border-radius: var(--os-radius);
+  background: #fff;
+  button {
+    width: 42px;
+    height: 44px;
+    border: 0;
+    background: transparent;
+    font-size: 1.15rem;
+    cursor: pointer;
+    &:hover:not(:disabled) {
+      background: var(--os-gray-100);
+    }
+    &:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+  }
+  output {
+    min-width: 2.4rem;
+    text-align: center;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: clamp(2.5rem, 8vw, 5rem) 1rem;
+  i {
+    font-size: 2.5rem;
+    color: var(--os-gray-300);
+  }
+  p {
+    margin-inline: auto;
+  }
+}

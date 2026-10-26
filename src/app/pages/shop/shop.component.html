@@ -1,0 +1,75 @@
+<div class="container section-tight">
+  <nav aria-label="Breadcrumb">
+    <ol class="breadcrumb-os"><li><a routerLink="/">Home</a></li><li aria-current="page">Shop</li></ol>
+  </nav>
+  <div class="page-head">
+    <h1 class="h-section">{{ category() || 'All shoes' }}</h1>
+    <p class="text-muted-os mb-0">Sample products for a student demo. Prices and stock are illustrative.</p>
+  </div>
+
+  <div class="layout">
+    <aside class="filters" aria-label="Filters">
+      <button type="button" class="btn-os-outline btn-sm-os filter-toggle" [attr.aria-expanded]="filtersOpen()" aria-controls="filter-panel" (click)="filtersOpen.set(!filtersOpen())">
+        <i class="bi bi-sliders" aria-hidden="true"></i> {{ filtersOpen() ? 'Hide filters' : 'Show filters' }}
+      </button>
+
+      <div id="filter-panel" class="filter-panel" [class.open]="filtersOpen()">
+        <div class="group">
+          <label for="shop-search" class="group-title">Search</label>
+          <input id="shop-search" type="search" class="form-control" placeholder="Name or brand" autocomplete="off" [value]="search()" (input)="search.set($any($event.target).value)" />
+        </div>
+
+        <fieldset class="group">
+          <legend class="group-title">Category</legend>
+          <div class="form-check"><input class="form-check-input" type="radio" name="cat" id="cat-all" [checked]="category() === ''" (change)="category.set('')" /><label class="form-check-label" for="cat-all">All categories</label></div>
+          @for (c of categories; track c) {
+            <div class="form-check"><input class="form-check-input" type="radio" name="cat" [id]="'cat-' + c" [checked]="category() === c" (change)="category.set(c)" /><label class="form-check-label" [for]="'cat-' + c">{{ c }}</label></div>
+          }
+        </fieldset>
+
+        <fieldset class="group">
+          <legend class="group-title">Brand</legend>
+          @for (b of brands; track b) {
+            <div class="form-check"><input class="form-check-input" type="checkbox" [id]="'brand-' + b" [checked]="selectedBrands().includes(b)" (change)="toggleBrand(b, $any($event.target).checked)" /><label class="form-check-label" [for]="'brand-' + b">{{ b }}</label></div>
+          }
+        </fieldset>
+
+        <fieldset class="group">
+          <legend class="group-title">Price</legend>
+          @for (r of priceRanges; track r.value) {
+            <div class="form-check"><input class="form-check-input" type="radio" name="price" [id]="'price-' + r.value" [checked]="priceRange() === r.value" (change)="priceRange.set(r.value)" /><label class="form-check-label" [for]="'price-' + r.value">{{ r.label }}</label></div>
+          }
+        </fieldset>
+
+        <button type="button" class="btn-os-outline btn-sm-os w-100" (click)="clearFilters()" [disabled]="!hasFilters()">Clear filters</button>
+      </div>
+    </aside>
+
+    <section aria-label="Products">
+      <div class="toolbar">
+        <p class="count" role="status" aria-live="polite"><strong>{{ results().length }}</strong> {{ results().length === 1 ? 'shoe' : 'shoes' }} found</p>
+        <div class="sort">
+          <label for="sort" class="form-label mb-0">Sort by</label>
+          <select id="sort" class="form-select" [value]="sort()" (change)="sort.set($any($event.target).value)">
+            @for (o of sortOptions; track o[0]) { <option [value]="o[0]" [selected]="sort() === o[0]">{{ o[1] }}</option> }
+          </select>
+        </div>
+      </div>
+
+      @if (results().length) {
+        <div class="row g-3 g-lg-4">
+          @for (p of results(); track p.id; let i = $index) {
+            <div class="col-6 col-xl-4"><app-product-card [product]="p" [eager]="i < 3" /></div>
+          }
+        </div>
+      } @else {
+        <div class="empty-state panel">
+          <i class="bi bi-search" aria-hidden="true"></i>
+          <h2 class="h-section mt-3">No shoes match that search</h2>
+          <p class="text-muted-os">Check the spelling, try a brand like Nike or Adidas, or remove a filter.</p>
+          <button type="button" class="btn-os" (click)="clearFilters()">Clear filters</button>
+        </div>
+      }
+    </section>
+  </div>
+</div>

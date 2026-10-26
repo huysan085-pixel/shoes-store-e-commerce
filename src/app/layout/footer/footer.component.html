@@ -1,0 +1,38 @@
+<footer class="site-footer on-dark">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-4">
+        <app-logo style="--logo-color:#fff;--logo-bg:#000" />
+        <p class="blurb">Classic and current sneakers from Nike, Adidas, New Balance, ASICS and Converse, with clear sizing and simple checkout.</p>
+      </div>
+      <div class="col-6 col-lg-2">
+        <h2 class="col-title">Shop</h2>
+        <ul>
+          <li><a routerLink="/shop">All shoes</a></li>
+          @for (c of categories; track c) { <li><a routerLink="/shop" [queryParams]="{ category: c }">{{ c }}</a></li> }
+        </ul>
+      </div>
+      <div class="col-6 col-lg-2">
+        <h2 class="col-title">Help</h2>
+        <ul>
+          <li><a routerLink="/cart">Your cart</a></li>
+          <li><a routerLink="/about">About this store</a></li>
+          <li><a routerLink="/shop" [queryParams]="{ sort: 'newest' }">New arrivals</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4">
+        <h2 class="col-title">Store information</h2>
+        <address>
+          Outsole store<br />
+          Phnom Penh, Cambodia<br />
+          outsole@gmail.com<br />
+          Mon to Sat, 9:00 to 18:00
+        </address>
+      </div>
+    </div>
+    <div class="legal">
+      <p>&copy; {{ year }} Outsole. Student midterm project built with Angular.</p>
+      <p>Sample products only. Brand names belong to their owners and are used for demonstration; this site is not affiliated with or authorised by them. Prices, stock and ratings are illustrative and no real orders are taken.</p>
+    </div>
+  </div>
+</footer>

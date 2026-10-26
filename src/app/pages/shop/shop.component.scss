@@ -1,0 +1,17 @@
+.page-head { margin: 1.25rem 0 2rem; }
+.layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: clamp(1.5rem, 3vw, 3rem); align-items: start; }
+.filters { position: sticky; top: 88px; }
+.filter-toggle { display: none; width: 100%; }
+.group { border: 0; padding: 0 0 1.4rem; margin: 0 0 1.4rem; border-bottom: 1px solid var(--os-gray-200); }
+.group-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.7rem; float: none; width: auto; padding: 0; display: block; }
+.form-check { margin-bottom: 0.4rem; label { cursor: pointer; } }
+.toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--os-gray-200); }
+.count { margin: 0; }
+.sort { display: flex; align-items: center; gap: 0.6rem; .form-select { min-height: 42px; width: auto; } }
+
+@media (max-width: 991px) {
+  .layout { grid-template-columns: 1fr; }
+  .filters { position: static; }
+  .filter-toggle { display: inline-flex; margin-bottom: 1rem; }
+  .filter-panel { display: none; &.open { display: block; } }
+}

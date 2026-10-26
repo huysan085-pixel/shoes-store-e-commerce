@@ -1,0 +1,207 @@
+<!-- File: src/app/pages/product-detail/product-detail.component.html -->
+@if (product(); as p) {
+  <div class="container section-tight">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb-os">
+        <li><a routerLink="/">Home</a></li>
+        <li><a routerLink="/shop">Shop</a></li>
+        <li><a routerLink="/shop" [queryParams]="{ category: p.category }">{{ p.category }}</a></li>
+        <li aria-current="page">{{ p.name }}</li>
+      </ol>
+    </nav>
+
+    <div class="detail">
+      <!-- Left: Image Gallery -->
+      <div class="gallery">
+        <div class="main-img">
+          <img
+            [src]="activeImage()"
+            appImgFallback
+            [alt]="p.name + ' in ' + color()"
+            fetchpriority="high"
+          />
+          @if (discount() > 0) {
+            <span class="badge-os badge-sale flag">-{{ discount() }}%</span>
+          }
+        </div>
+
+        <div class="thumbs" role="group" aria-label="Product images">
+          @for (img of p.images; track img; let i = $index) {
+            <button
+              type="button"
+              class="thumb"
+              [class.active]="activeImage() === img"
+              [attr.aria-label]="'Show image ' + (i + 1)"
+              [attr.aria-pressed]="activeImage() === img"
+              (click)="galleryIndex.set(i)"
+            >
+              <img [src]="img" appImgFallback alt="" loading="lazy" />
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Right: Product Info & Actions -->
+      <div class="info">
+        <p class="brand">{{ p.brand }} &middot; {{ p.category }}</p>
+        <h1>{{ p.name }}</h1>
+        <app-rating-stars [rating]="p.rating" [count]="p.reviewCount" />
+
+        <p class="price-line">
+          <span class="price">{{ p.price | currency: 'USD' }}</span>
+          @if (p.originalPrice) {
+            <span class="price-old"><span class="visually-hidden-os">Was </span>{{ p.originalPrice | currency: 'USD' }}</span>
+          }
+        </p>
+
+        <p class="sku">
+          SKU {{ p.sku }} &nbsp;|&nbsp;
+          <span class="stock" [class.out]="soldOut()" [class.low]="!soldOut() && p.stock <= 5">
+            <i class="bi" [class.bi-check-circle]="!soldOut()" [class.bi-x-circle]="soldOut()" aria-hidden="true"></i>
+            {{ stockLabel() }}
+          </span>
+        </p>
+
+        <!-- Color Selection -->
+        <fieldset class="opt">
+          <legend>Colour: <strong>{{ color() }}</strong></legend>
+          <div class="swatches">
+            @for (c of p.colors; track c.name) {
+              <button
+                type="button"
+                class="swatch"
+                [class.active]="color() === c.name"
+                [attr.aria-label]="c.name"
+                [attr.aria-pressed]="color() === c.name"
+                [style.--sw]="c.hex"
+                (click)="pickColor(c.name)"
+              ></button>
+            }
+          </div>
+        </fieldset>
+
+        <!-- Size Selection -->
+        <fieldset class="opt">
+          <legend>Size (US): <strong>{{ size() ?? 'Select a size' }}</strong></legend>
+          <div class="sizes" role="radiogroup" aria-label="Choose a size">
+            @for (s of p.sizes; track s) {
+              <button
+                type="button"
+                role="radio"
+                class="size"
+                [class.active]="size() === s"
+                [attr.aria-checked]="size() === s"
+                [disabled]="soldOut()"
+                (click)="pickSize(s)"
+              >
+                {{ s }}
+              </button>
+            }
+          </div>
+        </fieldset>
+
+        <!-- Quantity Stepper -->
+        <div class="opt">
+          <label id="qty-label" class="legend-like">Quantity</label>
+          <div class="qty-row">
+            <div class="stepper" role="group" aria-labelledby="qty-label">
+              <button type="button" aria-label="Decrease quantity" (click)="changeQty(-1)" [disabled]="soldOut() || quantity() <= 1">
+                <i class="bi bi-dash" aria-hidden="true"></i>
+              </button>
+              <output aria-live="polite">{{ quantity() }}</output>
+              <button type="button" aria-label="Increase quantity" (click)="changeQty(1)" [disabled]="soldOut() || quantity() >= maxQty()">
+                <i class="bi bi-plus" aria-hidden="true"></i>
+              </button>
+            </div>
+            @if (!soldOut()) {
+              <span class="text-muted-os small">{{ remaining() }} available to add</span>
+            }
+          </div>
+        </div>
+
+        @if (error()) {
+          <p class="field-error" role="alert">
+            <i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ error() }}
+          </p>
+        }
+
+        <!-- Add to Cart & Buy Now Buttons -->
+        <div class="buy">
+          <button type="button" class="btn-os" [disabled]="soldOut()" (click)="addToCart()">
+            <i class="bi bi-bag-plus" aria-hidden="true"></i> {{ soldOut() ? 'Sold out' : 'Add to cart' }}
+          </button>
+          <button type="button" class="btn-os-outline" [disabled]="soldOut()" (click)="buyNow()">
+            Buy now
+          </button>
+        </div>
+
+        <p class="demo-note">Sample product for a student demo. Checkout is a simulation and no payment is taken.</p>
+      </div>
+    </div>
+
+    <!-- Product Information Tabs -->
+    <section class="tabs-wrap" aria-label="Product information">
+      <div class="tablist" role="tablist">
+        <button type="button" role="tab" id="tab-description" [attr.aria-selected]="tab() === 'description'" (click)="tab.set('description')">Description</button>
+        <button type="button" role="tab" id="tab-specs" [attr.aria-selected]="tab() === 'specs'" (click)="tab.set('specs')">Specifications</button>
+        <button type="button" role="tab" id="tab-reviews" [attr.aria-selected]="tab() === 'reviews'" (click)="tab.set('reviews')">Reviews ({{ p.reviews.length }})</button>
+      </div>
+
+      @switch (tab()) {
+        @case ('description') {
+          <div class="tabpanel" role="tabpanel">
+            <p>{{ p.description }}</p>
+            <ul class="highlights">
+              @for (h of p.highlights; track h) { <li>{{ h }}</li> }
+            </ul>
+          </div>
+        }
+        @case ('specs') {
+          <div class="tabpanel" role="tabpanel">
+            <dl class="specs">
+              <div><dt>Brand</dt><dd>{{ p.brand }}</dd></div>
+              <div><dt>Category</dt><dd>{{ p.category }}</dd></div>
+              <div><dt>SKU</dt><dd>{{ p.sku }}</dd></div>
+              @for (s of p.specs; track s.label) { <div><dt>{{ s.label }}</dt><dd>{{ s.value }}</dd></div> }
+              <div><dt>Sizes (US)</dt><dd>{{ p.sizes.join(', ') }}</dd></div>
+            </dl>
+          </div>
+        }
+        @case ('reviews') {
+          <div class="tabpanel" role="tabpanel">
+            <p class="text-muted-os small">Sample reviews written for this demo. They are not from real customers.</p>
+            @for (r of p.reviews; track r.title) {
+              <article class="review avoid-break">
+                <app-rating-stars [rating]="r.rating" />
+                <h3>{{ r.title }}</h3>
+                <p>{{ r.body }}</p>
+                <p class="by">{{ r.author }}, {{ r.date }}</p>
+              </article>
+            }
+          </div>
+        }
+      }
+    </section>
+
+    <!-- Related Products -->
+    <section class="related" aria-labelledby="rel-title">
+      <h2 id="rel-title" class="h-section mb-4">You may also like</h2>
+      <div class="row g-3 g-lg-4">
+        @for (r of related(); track r.id) {
+          <div class="col-6 col-lg-3">
+            <app-product-card [product]="r" />
+          </div>
+        }
+      </div>
+    </section>
+  </div>
+} @else {
+  <div class="container section">
+    <div class="empty-state">
+      <i class="bi bi-emoji-frown" aria-hidden="true"></i>
+      <h1 class="h-section mt-3">We could not find that shoe</h1>
+      <p class="text-muted-os">The link may be old or mistyped. Browse the full range instead.</p>
+      <a routerLink="/shop" class="btn-os">Back to shop</a>
+    </div>
+  </div>
+}

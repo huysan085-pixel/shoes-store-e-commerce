@@ -1,0 +1,62 @@
+<div class="container section-tight">
+  @if (data(); as o) {
+    <div class="success">
+      <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+      <div>
+        <h1 class="h-section">Thank you, {{ o.customer.fullName.split(' ')[0] }}. Your demo order is placed.</h1>
+        <p class="mb-0">Order number <strong>{{ o.id }}</strong> &middot; {{ o.createdAt | date: 'medium' }}</p>
+      </div>
+    </div>
+    <p class="demo-note my-4">This was a demonstration. No payment was taken and no shoes will be shipped.</p>
+
+    <div class="actions no-print">
+      <a routerLink="/invoice" [queryParams]="{ order: o.id }" class="btn-os">View invoice</a>
+      <a routerLink="/invoice" [queryParams]="{ order: o.id, print: 1 }" class="btn-os-outline"><i class="bi bi-printer" aria-hidden="true"></i> Print invoice</a>
+      <a routerLink="/shop" class="btn-os-outline">Continue shopping</a>
+    </div>
+
+    <div class="grid">
+      <section class="panel" aria-labelledby="items-h">
+        <h2 id="items-h">Items ordered</h2>
+        <ul class="items">
+          @for (i of o.items; track $index) {
+            <li>
+              <img [src]="i.image" appImgFallback [alt]="i.name" width="800" height="520" loading="lazy" />
+              <div><strong>{{ i.name }}</strong><small>US {{ i.size }}, {{ i.color }}, qty {{ i.quantity }}</small></div>
+              <span class="price">{{ i.lineTotal | currency: 'USD' }}</span>
+            </li>
+          }
+        </ul>
+        <dl class="totals">
+          <div><dt>Subtotal</dt><dd>{{ o.subtotal | currency: 'USD' }}</dd></div>
+          @if (o.discount > 0) { <div class="disc"><dt>Discount{{ o.promoCode ? ' (' + o.promoCode + ')' : '' }}</dt><dd>-{{ o.discount | currency: 'USD' }}</dd></div> }
+          <div><dt>Shipping</dt><dd>{{ o.shipping === 0 ? 'Free' : (o.shipping | currency: 'USD') }}</dd></div>
+          <div class="grand"><dt>Total</dt><dd>{{ o.total | currency: 'USD' }}</dd></div>
+        </dl>
+      </section>
+
+      <div class="side">
+        <section class="panel" aria-labelledby="cust-h">
+          <h2 id="cust-h">Customer</h2>
+          <p>{{ o.customer.fullName }}<br />{{ o.customer.email }}<br />{{ o.customer.phone }}</p>
+        </section>
+        <section class="panel" aria-labelledby="ship-h">
+          <h2 id="ship-h">Shipping address</h2>
+          <address>{{ o.customer.address }}<br />{{ o.customer.city }}, {{ o.customer.province }} {{ o.customer.postalCode }}<br />{{ o.customer.country }}</address>
+        </section>
+        <section class="panel" aria-labelledby="pay-h">
+          <h2 id="pay-h">Payment method</h2>
+          <p class="mb-1">{{ paymentLabels[o.paymentMethod] }}</p>
+          <p class="mb-0 text-muted-os small">{{ o.status }}</p>
+        </section>
+      </div>
+    </div>
+  } @else {
+    <div class="empty-state panel">
+      <i class="bi bi-receipt" aria-hidden="true"></i>
+      <h1 class="h-section mt-3">We could not find that order</h1>
+      <p class="text-muted-os">Demo orders are saved in this browser only. Place a new demo order to see a confirmation.</p>
+      <a routerLink="/shop" class="btn-os">Shop now</a>
+    </div>
+  }
+</div>

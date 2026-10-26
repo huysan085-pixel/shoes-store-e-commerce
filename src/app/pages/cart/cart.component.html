@@ -1,0 +1,254 @@
+<!-- <div class="container section-tight">
+  <nav aria-label="Breadcrumb"><ol class="breadcrumb-os"><li><a routerLink="/">Home</a></li><li aria-current="page">Cart</li></ol></nav>
+  <h1 class="h-section my-4">Your cart</h1>
+
+  @if (!cart.ready()) {
+    <p class="text-muted-os" role="status">Loading your cart...</p>
+  } @else if (cart.lines().length === 0) {
+    <div class="empty-state panel">
+      <i class="bi bi-bag" aria-hidden="true"></i>
+      <h2 class="h-section mt-3">Your cart is empty</h2>
+      <p class="text-muted-os">Find a pair you like and it will show up here.</p>
+      <a routerLink="/shop" class="btn-os">Shop now</a>
+    </div>
+  } @else {
+    <div class="cart-layout">
+      <section aria-label="Items in your cart">
+        <ul class="lines">
+          @for (l of cart.lines(); track l.key) {
+            <li class="line">
+              <a [routerLink]="['/product', l.product.slug]" class="thumb"><img [src]="l.image" appImgFallback [alt]="l.product.name" width="800" height="520" loading="lazy" /></a>
+              <div class="line-info">
+                <h2><a [routerLink]="['/product', l.product.slug]">{{ l.product.name }}</a></h2>
+                <p class="opts">Size US {{ l.size }}<span class="sep"> | </span>Colour {{ l.color }}</p>
+                <p class="opts">{{ l.unitPrice | currency: 'USD' }} each</p>
+                <div class="line-actions">
+                  <div class="stepper" role="group" [attr.aria-label]="'Quantity for ' + l.product.name">
+                    <button type="button" aria-label="Decrease quantity" (click)="change(l.key, 'decrease')"><i class="bi bi-dash" aria-hidden="true"></i></button>
+                    <output>{{ l.quantity }}</output>
+                    <button type="button" aria-label="Increase quantity" (click)="change(l.key, 'increase')" [disabled]="l.quantity >= l.product.stock"><i class="bi bi-plus" aria-hidden="true"></i></button>
+                  </div>
+                  <button type="button" class="btn-link-os" (click)="remove(l.key)"><i class="bi bi-trash" aria-hidden="true"></i> Remove<span class="visually-hidden-os"> {{ l.product.name }}</span></button>
+                </div>
+              </div>
+              <p class="line-total price"><span class="visually-hidden-os">Line subtotal </span>{{ l.lineTotal | currency: 'USD' }}</p>
+            </li>
+          }
+        </ul>
+        <div class="list-actions">
+          <a routerLink="/shop" class="btn-os-outline btn-sm-os"><i class="bi bi-arrow-left" aria-hidden="true"></i> Continue shopping</a>
+          <button type="button" class="btn-link-os" (click)="clear()">Clear cart</button>
+        </div>
+      </section>
+
+      <aside class="summary panel" aria-label="Order summary">
+        <h2>Order summary</h2>
+
+        @if (cart.promoCode(); as code) {
+          <p class="applied"><i class="bi bi-tag-fill" aria-hidden="true"></i> {{ code }} applied <button type="button" class="btn-link-os" (click)="cart.removePromo()">Remove</button></p>
+        } @else {
+          <form class="promo" (submit)="$event.preventDefault(); applyPromo(code.value); code.value = ''">
+            <label for="promo" class="form-label">Promo code</label>
+            <div class="promo-row">
+              <input #code id="promo" class="form-control" type="text" placeholder="Try WELCOME10" autocomplete="off" [class.is-invalid]="!!promoError()" />
+              <button type="submit" class="btn-os-outline btn-sm-os">Apply</button>
+            </div>
+            @if (promoError()) { <p class="field-error" role="alert">{{ promoError() }}</p> }
+          </form>
+        }
+
+        <dl class="totals">
+          <div><dt>Subtotal ({{ cart.totals().itemCount }} {{ cart.totals().itemCount === 1 ? 'item' : 'items' }})</dt><dd>{{ cart.totals().subtotal | currency: 'USD' }}</dd></div>
+          @if (cart.totals().discount > 0) { <div class="disc"><dt>Discount ({{ cart.totals().promoLabel }})</dt><dd>-{{ cart.totals().discount | currency: 'USD' }}</dd></div> }
+          <div><dt>Shipping (demo)</dt><dd>{{ cart.totals().shipping === 0 ? 'Free' : (cart.totals().shipping | currency: 'USD') }}</dd></div>
+          <div class="grand"><dt>Total</dt><dd>{{ cart.totals().total | currency: 'USD' }}</dd></div>
+        </dl>
+        @if (cart.totals().freeShippingGap > 0) { <p class="hint">Add {{ cart.totals().freeShippingGap | currency: 'USD' }} more to get free delivery.</p> }
+
+        <a routerLink="/checkout" class="btn-os w-100">Proceed to checkout</a>
+      </aside>
+    </div>
+  }
+</div> -->
+
+
+<!-- File: src/app/pages/cart/cart.component.html -->
+<div class="container section-tight">
+  <nav aria-label="Breadcrumb">
+    <ol class="breadcrumb-os">
+      <li><a routerLink="/">Home</a></li>
+      <li aria-current="page">Cart</li>
+    </ol>
+  </nav>
+
+  <!-- Title & Select All Items Header -->
+  <div class="cart-header my-4">
+    <h1 class="h-section mb-0">Your cart</h1>
+
+    @if (cart.lines().length > 0) {
+      <label class="select-all-box">
+        <input
+          type="checkbox"
+          class="custom-check"
+          [checked]="allSelected()"
+          (change)="toggleAll($event)"
+        />
+        <span>Select all items ({{ cart.lines().length }})</span>
+      </label>
+    }
+  </div>
+
+  @if (!cart.ready()) {
+    <p class="text-muted-os" role="status">Loading your cart...</p>
+  } @else if (cart.lines().length === 0) {
+    <div class="empty-state panel">
+      <i class="bi bi-bag" aria-hidden="true"></i>
+      <h2 class="h-section mt-3">Your cart is empty</h2>
+      <p class="text-muted-os">Find a pair you like and it will show up here.</p>
+      <a routerLink="/shop" class="btn-os">Shop now</a>
+    </div>
+  } @else {
+    <div class="cart-layout">
+      <!-- Items Section -->
+      <section aria-label="Items in your cart">
+        <ul class="lines">
+          @for (l of cart.lines(); track l.key) {
+            <li class="line" [class.unselected]="!l.selected">
+              <!-- Checkbox next to each shoe -->
+              <div class="check-col">
+                <input
+                  type="checkbox"
+                  class="custom-check"
+                  [checked]="l.selected"
+                  [attr.aria-label]="'Select ' + l.product.name"
+                  (change)="toggle(l.key)"
+                />
+              </div>
+
+              <!-- Shoe Thumbnail -->
+              <a [routerLink]="['/product', l.product.slug]" class="thumb">
+                <img [src]="l.image" appImgFallback [alt]="l.product.name" loading="lazy" />
+              </a>
+
+              <!-- Line Info -->
+              <div class="line-info">
+                <h2>
+                  <a [routerLink]="['/product', l.product.slug]">{{ l.product.name }}</a>
+                </h2>
+                <p class="opts">Size US {{ l.size }}<span class="sep"> | </span>Colour {{ l.color }}</p>
+                <p class="opts">{{ l.unitPrice | currency: 'USD' }} each</p>
+
+                <div class="line-actions">
+                  <div class="stepper" role="group" [attr.aria-label]="'Quantity for ' + l.product.name">
+                    <button type="button" aria-label="Decrease quantity" (click)="change(l.key, 'decrease')">
+                      <i class="bi bi-dash" aria-hidden="true"></i>
+                    </button>
+                    <output>{{ l.quantity }}</output>
+                    <button
+                      type="button"
+                      aria-label="Increase quantity"
+                      (click)="change(l.key, 'increase')"
+                      [disabled]="l.quantity >= l.product.stock"
+                    >
+                      <i class="bi bi-plus" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                  <button type="button" class="btn-link-os" (click)="remove(l.key)">
+                    <i class="bi bi-trash" aria-hidden="true"></i> Remove
+                    <span class="visually-hidden-os"> {{ l.product.name }}</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Line Total -->
+              <p class="line-total price">
+                <span class="visually-hidden-os">Line subtotal </span>{{ l.lineTotal | currency: 'USD' }}
+              </p>
+            </li>
+          }
+        </ul>
+
+        <div class="list-actions">
+          <a routerLink="/shop" class="btn-os-outline btn-sm-os">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i> Continue shopping
+          </a>
+          <button type="button" class="btn-link-os" (click)="clear()">Clear cart</button>
+        </div>
+      </section>
+
+      <!-- Order Summary Aside -->
+      <aside class="summary panel" aria-label="Order summary">
+        <h2>Order summary</h2>
+
+        @if (cart.promoCode(); as code) {
+          <p class="applied">
+            <i class="bi bi-tag-fill" aria-hidden="true"></i> {{ code }} applied
+            <button type="button" class="btn-link-os" (click)="cart.removePromo()">Remove</button>
+          </p>
+        } @else {
+          <form class="promo" (submit)="$event.preventDefault(); applyPromo(code.value); code.value = ''">
+            <label for="promo" class="form-label">Promo code</label>
+            <div class="promo-row">
+              <input
+                #code
+                id="promo"
+                class="form-control"
+                type="text"
+                placeholder="Try WELCOME10"
+                autocomplete="off"
+                [class.is-invalid]="!!promoError()"
+              />
+              <button type="submit" class="btn-os-outline btn-sm-os">Apply</button>
+            </div>
+            @if (promoError()) {
+              <p class="field-error" role="alert">{{ promoError() }}</p>
+            }
+          </form>
+        }
+
+        <dl class="totals">
+          <div>
+            <dt>Subtotal ({{ cart.totals().itemCount }} {{ cart.totals().itemCount === 1 ? 'item' : 'items' }})</dt>
+            <dd>{{ cart.totals().subtotal | currency: 'USD' }}</dd>
+          </div>
+
+          @if (cart.totals().discount > 0) {
+            <div class="disc">
+              <dt>Discount ({{ cart.totals().promoLabel }})</dt>
+              <dd>-{{ cart.totals().discount | currency: 'USD' }}</dd>
+            </div>
+          }
+
+          <div>
+            <dt>Shipping (demo)</dt>
+            <dd>{{ cart.totals().shipping === 0 ? 'Free' : (cart.totals().shipping | currency: 'USD') }}</dd>
+          </div>
+
+          <div class="grand">
+            <dt>Total</dt>
+            <dd>{{ cart.totals().total | currency: 'USD' }}</dd>
+          </div>
+        </dl>
+
+        @if (cart.totals().freeShippingGap > 0 && selectedCount() > 0) {
+          <p class="hint">Add {{ cart.totals().freeShippingGap | currency: 'USD' }} more to get free delivery.</p>
+        }
+
+        @if (selectedCount() === 0) {
+          <p class="text-danger small mb-2">
+            <i class="bi bi-info-circle"></i> Please select at least one shoe to checkout.
+          </p>
+        }
+
+        <a
+          routerLink="/checkout"
+          class="btn-os w-100"
+          [class.disabled]="selectedCount() === 0"
+          [attr.aria-disabled]="selectedCount() === 0"
+        >
+          Proceed to checkout
+        </a>
+      </aside>
+    </div>
+  }
+</div>

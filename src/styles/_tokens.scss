@@ -1,0 +1,31 @@
+:root {
+  --os-black: #000000;
+  --os-charcoal: #26272a;
+  --os-gray-700: #44464b;
+  --os-gray-600: #62656b;
+  --os-gray-300: #cfd0d2;
+  --os-gray-200: #e3e3e1;
+  --os-gray-100: #f2f2f0;
+  --os-white: #ffffff;
+  --os-accent: #2f4bff;
+  --os-accent-dark: #1f35d6;
+  --os-danger: #c62828;
+  --os-success: #1b7a43;
+  --os-radius: 6px;
+  --os-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  // Bootstrap overrides
+  --bs-body-font-family:
+    'Archivo Variable', 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+  --bs-body-color: var(--os-black);
+  --bs-body-bg: var(--os-white);
+  --bs-body-font-size: 1rem;
+  --bs-body-line-height: 1.55;
+  --bs-link-color: var(--os-black);
+  --bs-link-color-rgb: 0, 0, 0;
+  --bs-link-hover-color: var(--os-accent);
+  --bs-link-hover-color-rgb: 47, 75, 255;
+  --bs-body-color-rgb: 0, 0, 0;
+  --bs-border-color: var(--os-gray-200);
+  --bs-border-radius: var(--os-radius);
+}

@@ -1,0 +1,114 @@
+<div class="container section-tight">
+  <nav aria-label="Breadcrumb"><ol class="breadcrumb-os"><li><a routerLink="/">Home</a></li><li><a routerLink="/cart">Cart</a></li><li aria-current="page">Checkout</li></ol></nav>
+  <h1 class="h-section my-4">Checkout</h1>
+
+  @if (!cart.ready()) {
+    <p class="text-muted-os" role="status">Loading your cart...</p>
+  } @else if (cart.lines().length === 0) {
+    <div class="empty-state panel">
+      <i class="bi bi-bag" aria-hidden="true"></i>
+      <h2 class="h-section mt-3">There is nothing to check out</h2>
+      <p class="text-muted-os">Add a pair to your cart first.</p>
+      <a routerLink="/shop" class="btn-os">Shop now</a>
+    </div>
+  } @else {
+    <p class="demo-note mb-4"><strong>This is a demonstration.</strong> No real order is placed and no payment is taken. Do not enter real card or banking details.</p>
+
+    <div class="checkout-layout">
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate aria-label="Checkout form">
+        @if (formError()) { <div class="alert-os" role="alert"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i> {{ formError() }}</div> }
+
+        <fieldset class="panel mb-4">
+          <legend>Contact details</legend>
+          <div class="row g-3">
+            <div class="col-12">
+              <label for="fullName" class="form-label">Full name</label>
+              <input id="fullName" class="form-control" formControlName="fullName" autocomplete="name" [class.is-invalid]="invalid('fullName')" [attr.aria-invalid]="invalid('fullName')" aria-describedby="fullName-err" />
+              <div id="fullName-err" class="field-error">@if (invalid('fullName')) { Enter your full name (at least 2 characters). }</div>
+            </div>
+            <div class="col-md-6">
+              <label for="email" class="form-label">Email</label>
+              <input id="email" type="email" class="form-control" formControlName="email" autocomplete="email" [class.is-invalid]="invalid('email')" [attr.aria-invalid]="invalid('email')" aria-describedby="email-err" />
+              <div id="email-err" class="field-error">@if (invalid('email')) { {{ form.controls.email.hasError('required') ? 'Enter your email address.' : 'Enter a valid email, like name@example.com.' }} }</div>
+            </div>
+            <div class="col-md-6">
+              <label for="phone" class="form-label">Phone number</label>
+              <input id="phone" type="tel" class="form-control" formControlName="phone" autocomplete="tel" placeholder="+855 12 345 678" [class.is-invalid]="invalid('phone')" [attr.aria-invalid]="invalid('phone')" aria-describedby="phone-err" />
+              <div id="phone-err" class="field-error">@if (invalid('phone')) { {{ form.controls.phone.hasError('required') ? 'Enter your phone number.' : 'Use 8 to 15 digits. You can include +, spaces or dashes.' }} }</div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="panel mb-4">
+          <legend>Shipping address</legend>
+          <div class="row g-3">
+            <div class="col-12">
+              <label for="address" class="form-label">Street address</label>
+              <input id="address" class="form-control" formControlName="address" autocomplete="street-address" [class.is-invalid]="invalid('address')" [attr.aria-invalid]="invalid('address')" aria-describedby="address-err" />
+              <div id="address-err" class="field-error">@if (invalid('address')) { Enter your street address (house number and street). }</div>
+            </div>
+            <div class="col-md-6">
+              <label for="city" class="form-label">City</label>
+              <input id="city" class="form-control" formControlName="city" autocomplete="address-level2" [class.is-invalid]="invalid('city')" [attr.aria-invalid]="invalid('city')" aria-describedby="city-err" />
+              <div id="city-err" class="field-error">@if (invalid('city')) { Enter your city. }</div>
+            </div>
+            <div class="col-md-6">
+              <label for="province" class="form-label">Province or state</label>
+              <input id="province" class="form-control" formControlName="province" autocomplete="address-level1" [class.is-invalid]="invalid('province')" [attr.aria-invalid]="invalid('province')" aria-describedby="province-err" />
+              <div id="province-err" class="field-error">@if (invalid('province')) { Enter your province or state. }</div>
+            </div>
+            <div class="col-md-6">
+              <label for="postalCode" class="form-label">Postal code <span class="text-muted-os">(optional)</span></label>
+              <input id="postalCode" class="form-control" formControlName="postalCode" autocomplete="postal-code" [class.is-invalid]="invalid('postalCode')" [attr.aria-invalid]="invalid('postalCode')" aria-describedby="postalCode-err" />
+              <div id="postalCode-err" class="field-error">@if (invalid('postalCode')) { Use letters, numbers, spaces or dashes only. }</div>
+            </div>
+            <div class="col-md-6">
+              <label for="country" class="form-label">Country</label>
+              <select id="country" class="form-select" formControlName="country" autocomplete="country-name">
+                @for (c of countries; track c) { <option [value]="c">{{ c }}</option> }
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="panel mb-4">
+          <legend>Payment method (demo)</legend>
+          <div class="pay-grid">
+            @for (p of payments; track p.value) {
+              <label class="pay" [class.selected]="form.controls.payment.value === p.value">
+                <input type="radio" class="visually-hidden-os" formControlName="payment" [value]="p.value" />
+                <i class="bi" [ngClass]="p.icon" aria-hidden="true"></i>
+                <span><strong>{{ p.title }}</strong><small>{{ p.text }}</small></span>
+                <i class="bi bi-check-circle-fill tick" aria-hidden="true"></i>
+              </label>
+            }
+          </div>
+        </fieldset>
+
+        <button type="submit" class="btn-os btn-lg-os w-100" [disabled]="submitting()">
+          {{ submitting() ? 'Placing demo order...' : 'Place demo order' }}
+        </button>
+      </form>
+
+      <aside class="summary panel" aria-label="Order summary">
+        <h2>Order summary</h2>
+        <ul class="items">
+          @for (l of cart.lines(); track l.key) {
+            <li>
+              <span class="pic"><img [src]="l.image" appImgFallback [alt]="l.product.name" width="800" height="520" loading="lazy" /><span class="q" aria-hidden="true">{{ l.quantity }}</span></span>
+              <span class="txt"><strong>{{ l.product.name }}</strong><small>US {{ l.size }}, {{ l.color }}, qty {{ l.quantity }}</small></span>
+              <span class="price">{{ l.lineTotal | currency: 'USD' }}</span>
+            </li>
+          }
+        </ul>
+        <dl class="totals">
+          <div><dt>Subtotal</dt><dd>{{ cart.totals().subtotal | currency: 'USD' }}</dd></div>
+          @if (cart.totals().discount > 0) { <div class="disc"><dt>Discount ({{ cart.totals().promoLabel }})</dt><dd>-{{ cart.totals().discount | currency: 'USD' }}</dd></div> }
+          <div><dt>Shipping (demo)</dt><dd>{{ cart.totals().shipping === 0 ? 'Free' : (cart.totals().shipping | currency: 'USD') }}</dd></div>
+          <div class="grand"><dt>Total</dt><dd>{{ cart.totals().total | currency: 'USD' }}</dd></div>
+        </dl>
+        <a routerLink="/cart" class="btn-link-os">Edit cart</a>
+      </aside>
+    </div>
+  }
+</div>

@@ -1,0 +1,12 @@
+/* Global styles. Bootstrap, Bootstrap Icons and the Archivo font are loaded from angular.json.
+   Everything below customises them for the Outsole look: black, white, charcoal, light gray + one cobalt accent. */
+@use 'styles/tokens';
+@use 'styles/base';
+@use 'styles/components';
+@use 'styles/print';
+/* Prevents images from stretching or squishing across all pages */
+img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
